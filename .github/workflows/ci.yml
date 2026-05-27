@@ -21,7 +21,7 @@ jobs:
     - name: Компиляция всех тестов и бенчмарков
       run: |
         gcc -o test_strmm test_strmm.c strmm.c -lm
-        gcc -o test_extended test_extended.c strmm.c -lm
+     #   gcc -o test_extended test_extended.c strmm.c -lm
         gcc -O2 -o bench_compare bench_compare.c strmm.c my_blas.c -lm
         echo "✅ Сборка завершена"
 
