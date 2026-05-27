@@ -286,3 +286,4 @@ cblas_strmm(CblasRowMajor, CblasLeft, CblasLower,
 ---
 https://github.com/larke4/proizvod_blast
 🔵 Небольшое обновление документации
++
