@@ -1,0 +1,46 @@
+name: CI — сборка, интерфейсные тесты и тесты производительности
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Установка компилятора и утилит
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential
+
+    - name: Компиляция всех тестов и бенчмарков
+      run: |
+        gcc -o test_strmm test_strmm.c strmm.c -lm
+        gcc -o test_extended test_extended.c strmm.c -lm
+        gcc -O2 -o bench_compare bench_compare.c strmm.c my_blas.c -lm
+        echo "✅ Сборка завершена"
+
+    - name: Запуск интерфейсных тестов (основные 12 тестов)
+      run: |
+        ./test_strmm
+      continue-on-error: false
+
+    - name: Запуск дополнительных интерфейсных тестов (10 тестов)
+      run: |
+        ./test_extended
+      continue-on-error: false
+
+    - name: Запуск тестов производительности (бенчмарк)
+      run: |
+        echo "=== Запуск бенчмарка ==="
+        ./bench_compare
+      continue-on-error: false
+
+    - name: Вывод итогов
+      run: |
+        echo "Все обязательные этапы выполнены."
